@@ -39,7 +39,7 @@ export function Certificate({ request, mentorName }: CertificateProps) {
         {/* Content */}
         <div className="text-center space-y-4 mb-8">
           <p className="text-sm text-muted-foreground">This certifies that</p>
-          <p className="text-xl font-mono font-bold text-foreground">{request.learnerName}</p>
+          <p className="text-xl font-mono font-bold text-foreground">{request.learner_name}</p>
           <p className="text-sm text-muted-foreground">successfully completed a mentorship session on</p>
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-5 py-2">
             <BookOpen className="h-4 w-4 text-primary" />
