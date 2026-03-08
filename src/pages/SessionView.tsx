@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -29,15 +29,16 @@ export default function SessionView() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  // Initialize messages once request loads
-  if (request && !initialized) {
-    setMessages([
-      { id: 1, sender: "learner", text: request.description },
-      { id: 2, sender: "mentor", text: "Hi! I just claimed your request. Let me take a look at what you're working on." },
-    ]);
-    setResolved(request.resolved);
-    setInitialized(true);
-  }
+  useEffect(() => {
+    if (request && !initialized) {
+      setMessages([
+        { id: 1, sender: "learner", text: request.description },
+        { id: 2, sender: "mentor", text: "Hi! I just claimed your request. Let me take a look at what you're working on." },
+      ]);
+      setResolved(request.resolved);
+      setInitialized(true);
+    }
+  }, [request, initialized]);
 
   if (isLoading) {
     return (
