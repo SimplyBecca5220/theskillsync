@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Video, Send, Bot, User } from "lucide-react";
+import { ArrowLeft, Video, Send, Bot, User, CheckCircle2 } from "lucide-react";
 import { getRequestById } from "@/lib/store";
 import { UrgencyBadge } from "@/components/UrgencyBadge";
+import { Confetti } from "@/components/Confetti";
+import { Certificate } from "@/components/Certificate";
 
 interface ChatMessage {
   id: number;
@@ -20,6 +22,8 @@ export default function SessionView() {
     { id: 2, sender: "mentor", text: "Hi! I just claimed your request. Let me take a look at what you're working on." },
   ]);
   const [input, setInput] = useState("");
+  const [resolved, setResolved] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   if (!request) {
     return (
@@ -41,8 +45,16 @@ export default function SessionView() {
     setInput("");
   };
 
+  const handleResolve = () => {
+    setShowConfetti(true);
+    setResolved(true);
+    setTimeout(() => setShowConfetti(false), 3000);
+  };
+
   return (
     <div className="container py-10 max-w-4xl">
+      <Confetti active={showConfetti} />
+
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Button variant="ghost" size="icon" asChild>
@@ -52,10 +64,27 @@ export default function SessionView() {
           <div className="flex items-center gap-2">
             <h1 className="font-mono font-bold text-xl">{request.topic} Session</h1>
             <UrgencyBadge level={request.urgency} />
+            {resolved && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-low/15 border border-low/30 px-2.5 py-0.5 text-xs font-mono font-semibold text-low">
+                <CheckCircle2 className="h-3 w-3" /> Resolved
+              </span>
+            )}
           </div>
           <p className="text-xs text-muted-foreground">with {request.learnerName}</p>
         </div>
+        {!resolved && (
+          <Button variant="hero" size="sm" onClick={handleResolve}>
+            <CheckCircle2 className="h-4 w-4 mr-1" /> Mark as Resolved
+          </Button>
+        )}
       </div>
+
+      {/* Certificate */}
+      {resolved && (
+        <div className="mb-8">
+          <Certificate request={request} mentorName="You" />
+        </div>
+      )}
 
       {/* Meeting link placeholder */}
       <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 mb-6 flex items-center gap-3">
@@ -105,8 +134,9 @@ export default function SessionView() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             className="bg-secondary/50 border-border"
+            disabled={resolved}
           />
-          <Button variant="hero" size="icon" onClick={handleSend}>
+          <Button variant="hero" size="icon" onClick={handleSend} disabled={resolved}>
             <Send className="h-4 w-4" />
           </Button>
         </div>
