@@ -1,54 +1,25 @@
-# Welcome to your Lovable project
+# Welcome to the SkillSync
 
-## Project info
+URL:
+https://theskillsync.lovable.app/
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Hi everyone! I’m Becca, and in the Nigerian tech ecosystem, we have a massive surge of new talent. But there’s a recurring bottleneck: beginners get stuck on small technical bugs for days, and experienced developers want to help but don't have a structured way to track their impact.
 
-## How can I edit this code?
+That’s why I built SkillSync. It’s a Proof-of-Learning platform designed to bridge the gap between learning and mastery through peer-to-peer mentorship.
 
-There are several ways of editing your application.
+Aligned with the Education and Digital Inclusion pillars of the 3MTT Showcase, SkillSync isn't just a chat app. It’s a decentralized ledger of knowledge transfer. It ensures that no developer is left behind because of a lack of access to a senior peer."
 
-**Use Lovable**
+By formalizing 'Proof-of-Learning,' we’re not just solving bugs; we’re building a verifiable history of mentorship that helps our youth transition into high-paying jobs faster.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+On the SkillSync Dashboard, as a learner, I can quickly post a 'Technical Blocker.' Let’s say I’m stuck on a React state issue. I input my topic, describe the bug, and hit 'Post Request.'"
+"Instantly, this appears on the Mentor Board. On the other side, an intermediate developer sees this, clicks 'Claim,' and a virtual workspace is initiated. Once the session is over, the mentor clicks 'Mark as Resolved.' This triggers our 'Proof-of-Work' certificate—a digital badge that validates the mentor's contribution and the learner's progress.
 
-Changes made via Lovable will be committed automatically to this repo.
+I built this using a modern full-stack approach—React for the frontend and a scalable backend to handle real-time updates. Looking forward, SkillSync is designed to scale from a single community in Calabar to a national network of 3MTT fellows.
 
-**Use your preferred IDE**
+We plan to integrate AI-driven matching to pair learners with the best-suited mentors automatically, making the learning process even more efficient.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+SkillSync is about more than just code; it’s about community. It’s proof that when we share knowledge, we all grow. Thank you for the opportunity to showcase this solution.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
 
 ## What technologies are used for this project?
 
@@ -60,14 +31,5 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
