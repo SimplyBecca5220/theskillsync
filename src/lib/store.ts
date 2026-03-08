@@ -1,3 +1,5 @@
+import { supabase } from "@/integrations/supabase/client";
+
 export type UrgencyLevel = "low" | "medium" | "high";
 
 export interface HelpRequest {
@@ -5,9 +7,10 @@ export interface HelpRequest {
   topic: string;
   description: string;
   urgency: UrgencyLevel;
-  createdAt: Date;
-  claimedBy: string | null;
-  learnerName: string;
+  created_at: string;
+  claimed_by: string | null;
+  learner_name: string;
+  resolved: boolean;
 }
 
 export interface Mentor {
@@ -18,37 +21,6 @@ export interface Mentor {
   specialty: string;
 }
 
-// In-memory store (no backend)
-let requests: HelpRequest[] = [
-  {
-    id: "1",
-    topic: "React",
-    description: "Struggling with useEffect cleanup functions and memory leaks in my component.",
-    urgency: "high",
-    createdAt: new Date(Date.now() - 1000 * 60 * 15),
-    claimedBy: null,
-    learnerName: "Alex Chen",
-  },
-  {
-    id: "2",
-    topic: "Python",
-    description: "Need help understanding async/await patterns with aiohttp.",
-    urgency: "medium",
-    createdAt: new Date(Date.now() - 1000 * 60 * 45),
-    claimedBy: null,
-    learnerName: "Sarah Kim",
-  },
-  {
-    id: "3",
-    topic: "TypeScript",
-    description: "Can't figure out generic constraints with conditional types.",
-    urgency: "low",
-    createdAt: new Date(Date.now() - 1000 * 60 * 120),
-    claimedBy: null,
-    learnerName: "Jordan Lee",
-  },
-];
-
 const mentors: Mentor[] = [
   { id: "m1", name: "Priya Sharma", avatar: "PS", badges: 12, specialty: "React" },
   { id: "m2", name: "Marcus Johnson", avatar: "MJ", badges: 9, specialty: "Python" },
@@ -57,49 +29,56 @@ const mentors: Mentor[] = [
   { id: "m5", name: "Amira Hassan", avatar: "AH", badges: 4, specialty: "Go" },
 ];
 
-let listeners: (() => void)[] = [];
-
-function notify() {
-  listeners.forEach((l) => l());
-}
-
-export function subscribe(listener: () => void) {
-  listeners.push(listener);
-  return () => {
-    listeners = listeners.filter((l) => l !== listener);
-  };
-}
-
-export function getRequests() {
-  return [...requests];
-}
-
 export function getMentors() {
   return [...mentors];
 }
 
-export function addRequest(topic: string, description: string, urgency: UrgencyLevel, learnerName: string) {
-  const req: HelpRequest = {
-    id: Date.now().toString(),
-    topic,
-    description,
-    urgency,
-    createdAt: new Date(),
-    claimedBy: null,
-    learnerName,
-  };
-  requests = [req, ...requests];
-  notify();
-  return req;
+export async function fetchRequests(): Promise<HelpRequest[]> {
+  const { data, error } = await supabase
+    .from("help_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as HelpRequest[];
 }
 
-export function claimRequest(requestId: string, mentorName: string) {
-  requests = requests.map((r) =>
-    r.id === requestId ? { ...r, claimedBy: mentorName } : r
-  );
-  notify();
+export async function addRequest(
+  topic: string,
+  description: string,
+  urgency: UrgencyLevel,
+  learnerName: string
+) {
+  const { data, error } = await supabase
+    .from("help_requests")
+    .insert({ topic, description, urgency, learner_name: learnerName })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as HelpRequest;
 }
 
-export function getRequestById(id: string) {
-  return requests.find((r) => r.id === id) || null;
+export async function claimRequest(requestId: string, mentorName: string) {
+  const { error } = await supabase
+    .from("help_requests")
+    .update({ claimed_by: mentorName })
+    .eq("id", requestId);
+  if (error) throw error;
+}
+
+export async function resolveRequest(requestId: string) {
+  const { error } = await supabase
+    .from("help_requests")
+    .update({ resolved: true })
+    .eq("id", requestId);
+  if (error) throw error;
+}
+
+export async function getRequestById(id: string): Promise<HelpRequest | null> {
+  const { data, error } = await supabase
+    .from("help_requests")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data as HelpRequest | null;
 }
